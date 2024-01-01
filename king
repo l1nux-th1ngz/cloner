@@ -1,0 +1,31 @@
+#!/bin/bash
+
+HYPR_DIR="$HOME/.config/hypr"
+CONF_DIR="$HYPR_DIR/conf"
+
+# Create the Hypr directory and the conf subdirectory
+mkdir -p "$CONF_DIR"
+
+# Control Waybar
+waybar_cmd="apply_waybar_configuration.sh"
+echo "#!/bin/bash\n# Waybar configuration script" > "$CONF_DIR/$waybar_cmd"
+echo "echo 'Configuring Waybar with bubble gum and lip gloss...'" >> "$CONF_DIR/$waybar_cmd"
+echo "# Your Waybar configuration commands go here..." >> "$CONF_DIR/$waybar_cmd"
+chmod +x "$CONF_DIR/$waybar_cmd"
+
+# Control Rofi
+rofi_cmd="apply_rofi_configuration.sh"
+echo "#!/bin/bash\n# Rofi configuration script" > "$CONF_DIR/$rofi_cmd"
+echo "echo 'Configuring Rofi with bubble gum and lip gloss...'" >> "$CONF_DIR/$rofi_cmd"
+echo "# Your Rofi configuration commands go here..." >> "$CONF_DIR/$rofi_cmd"
+chmod +x "$CONF_DIR/$rofi_cmd"
+
+# Repeat the process for other components like Wofi, Eww, Ags, Swww, Pywal, Cava, etc.
+
+# Break down the Hyprland.conf into sections and place them in the conf directory
+awk '/# Start Section Waybar/,/# End Section Waybar/' "$HYPR_DIR/hyprland.conf" > "$CONF_DIR/waybar_section.conf"
+awk '/# Start Section Rofi/,/# End Section Rofi/' "$HYPR_DIR/hyprland.conf" > "$CONF_DIR/rofi_section.conf"
+# Repeat for other sections...
+
+echo "Configuration scripts and sections placed in $CONF_DIR."
+echo "Time to apply bubble gum and lip gloss to your Hyprland desktop!"
