@@ -1,0 +1,36 @@
+#!/bin/bash
+
+HYPR_DIR="$HOME/.config/hypr"
+CONF_DIR="$HYPR_DIR/conf"
+
+# Create the Hypr directory and the conf subdirectory
+mkdir -p "$HYPR_DIR"
+mkdir -p "$CONF_DIR"
+
+# List of applications
+APPS=("kitty" "alacritty" "terminator" "mpc" "vlc" "spotify" "btop" "gtklock" "neofetch" "thefuck" "nvim" "geany" "kvantum" "wlogout" "dunt" "grimblast" "mako" "qt5ct" "qt6ct" "swaync" "swww" "waypaper-engine" "lsd" "aconfmgr")
+
+# Loop through each application
+for app in "${APPS[@]}"; do
+    app_cmd="apply_${app}_configuration.sh"
+    
+    # Create application directory and configuration script
+    app_dir="$HYPR_DIR/$app"
+    mkdir -p "$app_dir"
+    echo "#!/bin/bash" > "$app_dir/$app_cmd"
+    echo "echo 'Configuring $app with bubble gum and lip gloss...'" >> "$app_dir/$app_cmd"
+    echo "# Your $app configuration commands go here..." >> "$app_dir/$app_cmd"
+    chmod +x "$app_dir/$app_cmd"
+    
+    # Add the script to run on startup
+    echo "@bash $app_dir/$app_cmd" >> "$HOME/.config/autostart/hypr_autostart.desktop"
+done
+
+# Break down the Hyprland.conf into sections and place them in the conf directory
+awk '/# Start Section Kitty/,/# End Section Kitty/' "$HYPR_DIR/hyprland.conf" > "$CONF_DIR/kitty_section.conf"
+awk '/# Start Section Alacritty/,/# End Section Alacritty/' "$HYPR_DIR/hyprland.conf" > "$CONF_DIR/alacritty_section.conf"
+# Repeat for other sections...
+
+echo "Configuration scripts and sections placed in $HYPR_DIR and $CONF_DIR."
+echo "Auto-start configuration added to $HOME/.config/autostart/hypr_autostart.desktop."
+echo "Time to apply bubble gum and lip gloss to your applications on startup!"
